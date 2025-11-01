@@ -1,4 +1,4 @@
-package web.controlevacinacao.model;
+package web.firealert.model;
 
 import jakarta.persistence.*;
 
