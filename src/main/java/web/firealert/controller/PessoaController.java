@@ -3,7 +3,7 @@ package web.firealert.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import web.firealert.model.Pessoa;
-import web.firealert.repository.PessoaRepository;
+import web.firealert.service.PessoaService;
 
 import java.util.List;
 
@@ -12,16 +12,16 @@ import java.util.List;
 public class PessoaController {
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private PessoaService pessoaService;
 
     @GetMapping
     public List<Pessoa> listarPessoas() {
-        return pessoaRepository.findAll();
+        return pessoaService.listarTodos();
     }
 
-    @PostMapping
-    public Pessoa criarPessoa(@RequestBody Pessoa pessoa) {
 
-        return pessoaRepository.save(pessoa);
+    @PostMapping("/floresta/{idFloresta}")
+    public Pessoa criarGuarda(@RequestBody Pessoa pessoa, @PathVariable Long idFloresta) {
+        return pessoaService.cadastrarGuarda(pessoa, idFloresta);
     }
 }

@@ -33,6 +33,14 @@ public class Alert {
         this.tipo = tipo;
     }
 
+    public Floresta getFloresta() {
+        return floresta;
+    }
+
+    public void setFloresta(Floresta floresta) {
+        this.floresta = floresta;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
