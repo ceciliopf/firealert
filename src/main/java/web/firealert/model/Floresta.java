@@ -8,12 +8,16 @@ import java.util.Objects;
 @Entity
 public class Floresta {
     @Id
-    @SequenceGenerator(name="gerador2", sequenceName="pessoa_codigo_seq", allocationSize=1)
-    @GeneratedValue(generator="gerador2", strategy= GenerationType.SEQUENCE)
+    @SequenceGenerator(name="floresta_seq", sequenceName="floresta_codigo_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="floresta_seq")
     private long id;
     private String name;
     private String endereco;
+
+    @OneToMany(mappedBy = "floresta", cascade = CascadeType.ALL)
     ArrayList<Pessoa> pessoa;
+
+    @OneToMany(mappedBy = "floresta", cascade = CascadeType.ALL)
     ArrayList<Alert> alert;
 
     public long getId() {

@@ -8,10 +8,14 @@ import java.util.Objects;
 public class Alert {
 
     @Id
-    @SequenceGenerator(name="gerador2", sequenceName="pessoa_codigo_seq", allocationSize=1)
-    @GeneratedValue(generator="gerador2", strategy= GenerationType.SEQUENCE)
+    @SequenceGenerator(name="alert_seq", sequenceName="alert_codigo_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="alert_seq")
     private long id;
     private String tipo;
+
+    @ManyToOne
+    @JoinColumn(name = "floresta_id") // Isso cria a coluna na tabela do banco
+    private Floresta floresta;
 
     public long getId() {
         return id;
