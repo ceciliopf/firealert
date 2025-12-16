@@ -18,6 +18,15 @@ public class Pessoa implements Serializable {
 	private Long codigo;
 	private String nome;
 	private String cpf;
+	private String telefone;
+
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "pessoa_tipo")
+	private TipoUsuario tipo;
+
+	
+
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 
@@ -26,7 +35,21 @@ public class Pessoa implements Serializable {
     private Floresta floresta;
 
 
+	public TipoUsuario getTipo() {
+		return tipo;
+	}
 
+	public void setTipo(TipoUsuario tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
     public Floresta getFloresta() {
         return floresta;
     }

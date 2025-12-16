@@ -3,6 +3,7 @@ package web.firealert.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,10 +16,10 @@ public class Floresta {
     private String endereco;
 
     @OneToMany(mappedBy = "floresta", cascade = CascadeType.ALL)
-    ArrayList<Pessoa> pessoa;
+    private List<Pessoa> pessoa = new ArrayList<>();
 
     @OneToMany(mappedBy = "floresta", cascade = CascadeType.ALL)
-    ArrayList<Alert> alert;
+    private List<Alert> alert = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -44,20 +45,20 @@ public class Floresta {
         this.endereco = endereco;
     }
 
-    public ArrayList<Pessoa> getPessoa() {
+    public List<Pessoa> getPessoa() {
         return pessoa;
     }
 
 
-    public void setPessoa(ArrayList<Pessoa> pessoa) {
+    public void setPessoa(List<Pessoa> pessoa) {
         this.pessoa = pessoa;
     }
 
-    public ArrayList<Alert> getAlert() {
+    public List<Alert> getAlert() {
         return alert;
     }
 
-    public void setAlert(ArrayList<Alert> alert) {
+    public void setAlert(List<Alert> alert) {
         this.alert = alert;
     }
 

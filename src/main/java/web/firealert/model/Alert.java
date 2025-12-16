@@ -11,11 +11,33 @@ public class Alert {
     @SequenceGenerator(name="alert_seq", sequenceName="alert_codigo_seq", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="alert_seq")
     private long id;
-    private String tipo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name ="alert_gravidade")
+    private Gravidade tipo;
+
+    private String descricao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "alert_status")
+    private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "floresta_id") // Isso cria a coluna na tabela do banco
+    @JoinColumn(name = "floresta_id") 
     private Floresta floresta;
+
+    @ManyToMany
+    @JoinColumn(name = "pessoa_id")
+    private Pessoa pessoa;
+
+    
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
 
     public long getId() {
         return id;
@@ -25,13 +47,22 @@ public class Alert {
         this.id = id;
     }
 
-    public String getTipo() {
+    public Gravidade getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Gravidade tipo) {
         this.tipo = tipo;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
 
     public Floresta getFloresta() {
         return floresta;
@@ -59,5 +90,12 @@ public class Alert {
                 "id=" + id +
                 ", tipo='" + tipo + '\'' +
                 '}';
+    }
+    public String getDesc() {
+        return descricao;
+    }
+
+    public void setDesc(String descricao) {
+        this.descricao = descricao;
     }
 }
