@@ -1,28 +1,42 @@
 package web.firealert.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.firealert.model.Floresta;
 import web.firealert.service.FlorestaService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+
+@Controller
 @RequestMapping("/florestas")
 public class FlorestaController {
 
     @Autowired
     private FlorestaService florestaService;
 
+
     @GetMapping
-    public List<Floresta> listarTodas() {
-        return florestaService.listarTodas();
+    public String abrirPesquisa(Model model) {
+        List<Floresta> list = florestaService.listarTodas();
+
+        model.addAttribute(list);
+
+        return "florestas/pesquisar";
     }
 
-    @PostMapping
-    public Floresta criarFloresta(@RequestBody Floresta floresta) {
-        return florestaService.salvar(floresta);
+    @GetMapping("/cadastrar")
+    public String abrirCadastro(Model model) {
+        model.addAttribute("floresta", new Floresta());
+
+        return "florestas/cadastrar";
     }
+    
+    
 
 
     @GetMapping("/{id}")

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Florestas Monitoradas</title>
+</head>
+<body>
+    <div layout:fragment="conteudo">
+        <div class="flex flex-col gap-5">
+            <div class="flex justify-between items-center bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800">Florestas Monitoradas</h1>
+                    <p class="text-sm text-gray-500">Gerenciamento das áreas de preservação</p>
+                </div>
+                <a th:href="@{/florestas/cadastrar}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg>
+                    Nova Área
+                </a>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome da Área</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Localização/Endereço</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr th:each="f : ${listaFlorestas}" class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${f.id}">1</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${f.name}">Parque Nacional</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${f.endereco}">MG-42, Km 10</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Editar</a>
+                                <span class="text-red-600 hover:text-red-900 cursor-pointer">Excluir</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(listaFlorestas)}">
+                            <td colspan="4" class="px-6 py-10 text-center text-gray-500">
+                                Nenhuma floresta cadastrada ainda.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

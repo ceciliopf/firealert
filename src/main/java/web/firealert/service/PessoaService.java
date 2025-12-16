@@ -18,12 +18,7 @@ public class PessoaService {
     @Autowired
     private FlorestaRepository florestaRepository;
 
-    public Pessoa cadastrarGuarda(Pessoa pessoa, Long florestaId) {
-
-        Floresta floresta = florestaRepository.findById(florestaId)
-                .orElseThrow(() -> new RuntimeException("Floresta não existe!"));
-
-        pessoa.setFloresta(floresta);
+    public Pessoa cadastrarGuarda(Pessoa pessoa) {
 
         return pessoaRepository.save(pessoa);
     }

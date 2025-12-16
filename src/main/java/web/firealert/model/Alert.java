@@ -26,7 +26,7 @@ public class Alert {
     @JoinColumn(name = "floresta_id") 
     private Floresta floresta;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
