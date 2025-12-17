@@ -91,11 +91,11 @@ public class Alert {
                 ", tipo='" + tipo + '\'' +
                 '}';
     }
-    public String getDesc() {
+    public String getDescricao() {
         return descricao;
     }
 
-    public void setDesc(String descricao) {
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 }

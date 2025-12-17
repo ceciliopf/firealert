@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Alerta</title>
+</head>
+<body>
+    <div layout:fragment="conteudo">
+        <div class="max-w-3xl mx-auto">
+            <div class="mb-6 border-l-4 border-red-600 pl-4">
+                <h2 class="text-2xl font-bold text-gray-800">Registrar Ocorrência</h2>
+                <p class="text-gray-500">Informe os detalhes do foco de incêndio ou alerta.</p>
+            </div>
+
+            <form th:action="@{/alertas/salvar}" th:object="${alert}" method="post" class="bg-white p-6 rounded-lg shadow-md border border-gray-200 space-y-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Local da Ocorrência</label>
+                        <select th:field="*{floresta}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500" required>
+                            <option value="">Selecione a Floresta...</option>
+                            <option th:each="f : ${florestas}" th:value="${f.id}" th:text="${f.name}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Reportado por</label>
+                        <select th:field="*{pessoa}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
+                            <option value="">Selecione o Brigadista...</option>
+                            <option th:each="p : ${pessoas}" th:value="${p.codigo}" th:text="${p.nome}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nível de Gravidade</label>
+                        <select th:field="*{tipo}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
+                            <option value="BAIXA">Baixa</option>
+                            <option value="MEDIA">Média</option>
+                            <option value="ALTA">Alta</option>
+                            <option value="CRITICA">Crítica</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status Inicial</label>
+                        <select th:field="*{status}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
+                             <option value="ABERTO">Aberto</option>
+                            <option value="EM_ANDAMENTO">Em Andamento</option>
+                            <option value="CONTROLADO">Controlado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Descrição Detalhada</label>
+                    <textarea th:field="*{descricao}" rows="4" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500" placeholder="Descreva a situação, pontos de referência, etc..."></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <a th:href="@{/alertas}" class="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Cancelar</a>
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 shadow-sm font-bold">EMITIR ALERTA</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
