@@ -28,7 +28,7 @@ public class PessoaController {
 
     @GetMapping
     public String abrirPesquisa(Model model) {
-        model.addAttribute("pessoas", pessoaService.listarTodos());
+        model.addAttribute("listaPessoas", pessoaService.listarTodos());
 
         return "pessoas/pesquisar";
     }

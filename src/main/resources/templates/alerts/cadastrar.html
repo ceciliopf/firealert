@@ -36,19 +36,18 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nível de Gravidade</label>
                         <select th:field="*{tipo}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
-                            <option value="BAIXA">Baixa</option>
-                            <option value="MEDIA">Média</option>
-                            <option value="ALTA">Alta</option>
-                            <option value="CRITICA">Crítica</option>
+                            <option value="LOW">Baixa</option>
+                            <option value="MEDIUM">Média</option>
+                            <option value="HIGH">Alta</option>
+                            <option value="CRITIC">Crítica</option>
                         </select>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Status Inicial</label>
                         <select th:field="*{status}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
-                             <option value="ABERTO">Aberto</option>
-                            <option value="EM_ANDAMENTO">Em Andamento</option>
-                            <option value="CONTROLADO">Controlado</option>
+                             <option value="PENDING">Aberto</option>
+                            <option value="ONGOING">Em Andamento</option>
                         </select>
                     </div>
                 </div>

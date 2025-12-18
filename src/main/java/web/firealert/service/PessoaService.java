@@ -26,4 +26,8 @@ public class PessoaService {
     public List<Pessoa> listarTodos() {
         return pessoaRepository.findAll();
     }
+
+    public long contarTodas() {
+        return pessoaRepository.count();
+    }
 }

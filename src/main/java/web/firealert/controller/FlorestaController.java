@@ -8,8 +8,6 @@ import web.firealert.model.Floresta;
 import web.firealert.service.FlorestaService;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -24,7 +22,7 @@ public class FlorestaController {
     public String abrirPesquisa(Model model) {
         List<Floresta> list = florestaService.listarTodas();
 
-        model.addAttribute(list);
+        model.addAttribute("listaFlorestas", list);
 
         return "florestas/pesquisar";
     }
@@ -36,11 +34,29 @@ public class FlorestaController {
         return "florestas/cadastrar";
     }
     
-    
+    @PostMapping("/salvar") 
+    public String salvar(Floresta floresta) {
+        florestaService.salvar(floresta);
+        return "redirect:/florestas";
+    }
 
+    @GetMapping("/visualizar/{id}")
+    public String visualizar(@PathVariable("id") Long id, Model model) {
+        Floresta floresta = florestaService.buscarPorId(id);
+        model.addAttribute("floresta", floresta);
+        return "florestas/visualizar";
+    }
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable("id") Long id, Model model) {
+        Floresta floresta = florestaService.buscarPorId(id);
+        model.addAttribute("floresta", floresta);
+        return "florestas/cadastrar"; // Reaproveita a tela de cadastro
+    }
 
-    @GetMapping("/{id}")
-    public Floresta buscarPorId(@PathVariable Long id) {
-        return florestaService.buscarPorId(id);
+    // 2. Rota de Exclusão
+    @PostMapping("/excluir/{id}")
+    public String excluir(@PathVariable("id") Long id) {
+        florestaService.excluir(id);
+        return "redirect:/florestas";
     }
 }

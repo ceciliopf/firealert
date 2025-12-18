@@ -10,8 +10,6 @@ import web.firealert.service.FlorestaService;
 import web.firealert.service.PessoaService;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -27,7 +25,7 @@ public class AlertController {
     
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("alertas", alertService.listarTodos());
+        model.addAttribute("listaAlertas", alertService.listarTodos());
         return "alerts/pesquisar";
 
     }
@@ -43,6 +41,30 @@ public class AlertController {
         return "alerts/cadastrar";
     }
     
-    
+    @PostMapping("/salvar")
+    public String salvar(Alert alert) {
+
+        alertService.criarAlerta(alert);
+        
+        return "redirect:/alertas";
+    }
+
+    @GetMapping("/visualizar/{id}")
+    public String visualizar(@PathVariable("id") Long id, Model model) {
+        Alert alert = alertService.buscarPorId(id);
+        model.addAttribute("alert", alert);
+        
+        // NOVO: Enviamos as listas para permitir a edição dos selects
+        model.addAttribute("florestas", florestaService.listarTodas());
+        model.addAttribute("pessoas", pessoaService.listarTodos());
+        
+        return "alerts/visualizar";
+    }
+
+    @PostMapping("/excluir/{id}")
+    public String excluir(@PathVariable("id") Long id) {
+        alertService.excluir(id);
+        return "redirect:/alertas";
+    }
     
 }

@@ -43,14 +43,14 @@
 
       <div x-show="open" class="space-y-1 bg-gray-900/50 py-2 pl-12 pr-4 transition-all" x-transition>
         <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Membros', '/pessoas', ~{::#user-plus-icon})}"></div>
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Escalas', '#', ~{::#calendar-icon})}"></div>
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Adicionar Pessoa', @{/pessoas/cadastrar}, ~{::#user-plus-icon})}"></div>
       </div>
     </div>
 
     <div x-data="{ open: false }">
       <button th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Relatórios', ~{::#chart-icon})}"></button>
       <div x-show="open" class="space-y-1 bg-gray-900/50 py-2 pl-12 pr-4 transition-all" x-transition>
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ocorrências', '#', ~{::#pdf-icon})}"></div>
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ocorrências', '/relatorios/ocorrencias', ~{::#pdf-icon})}"></div>
       </div>
     </div>
 

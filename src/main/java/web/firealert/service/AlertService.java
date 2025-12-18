@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.firealert.model.Alert;
 import web.firealert.model.Floresta;
+import web.firealert.model.Status;
 import web.firealert.repository.AlertRepository;
 import web.firealert.repository.FlorestaRepository;
 
@@ -18,22 +19,25 @@ public class AlertService {
     @Autowired
     private FlorestaRepository florestaRepository;
 
-    public Alert criarAlerta(Alert alerta, Long florestaId) {
-
-        Floresta floresta = florestaRepository.findById(florestaId)
-                .orElseThrow(() -> new RuntimeException("Floresta não encontrada para o ID: " + florestaId));
-
-
-        alerta.setFloresta(floresta);
-
-        System.out.println(">>> ENVIANDO EMAIL PARA AUTORIDADES SOBRE: " + alerta.getTipo());
-        System.out.println(">>> LOCAL: " + floresta.getName());
-
+    public Alert criarAlerta(Alert alerta) {
 
         return alertRepository.save(alerta);
     }
 
     public List<Alert> listarTodos() {
         return alertRepository.findAll();
+    }
+
+    public long contarAlertasAtivos() {
+        return alertRepository.countByStatusNot(Status.DONE);
+    }
+
+    public Alert buscarPorId(Long id) {
+        return alertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Alerta não encontrado!"));
+    }
+
+    public void excluir(Long id) {
+        alertRepository.deleteById(id);
     }
 }

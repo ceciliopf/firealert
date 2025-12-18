@@ -26,4 +26,12 @@ public class FlorestaService {
         return florestaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Floresta não encontrada!"));
     }
+
+    public long contarTodas() {
+        return florestaRepository.count();
+    }
+
+    public void excluir(Long id) {
+        florestaRepository.deleteById(id);
+    }
 }

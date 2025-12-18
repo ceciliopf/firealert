@@ -40,7 +40,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${a.status}">ABERTO</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${a.pessoa != null} ? ${a.pessoa.nome} : 'Sistema'">Guardião 1</td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">Detalhes</a>
+                                <a th:href="@{/alertas/visualizar/{id}(id=${a.id})}" class="text-blue-600 hover:text-blue-900 font-bold hover:underline">Detalhes</a>
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(listaAlertas)}">
