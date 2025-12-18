@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import web.firealert.model.Alert;
+import web.firealert.model.Gravidade;
+import web.firealert.model.Status;
 import web.firealert.service.AlertService;
 import web.firealert.service.FlorestaService;
 import web.firealert.service.PessoaService;
@@ -31,13 +33,20 @@ public class AlertController {
     private PessoaService pessoaService;
     
     @GetMapping
-    public String listar(@RequestParam(defaultValue = "0") int page, Model model) {
-
+    public String listar(@RequestParam(defaultValue = "0") int page,
+                         @RequestParam(required = false) Status status,
+                         @RequestParam(required = false) Gravidade tipo,
+                         Model model) {
+        
         Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         
-        Page<Alert> pageAlerts = alertService.listarPaginado(pageable);
+        Page<Alert> pageAlerts = alertService.listarPaginado(status, tipo, pageable);
         
         model.addAttribute("pageAlerts", pageAlerts);
+        
+        model.addAttribute("filtroStatus", status);
+        model.addAttribute("filtroTipo", tipo);
+        
         return "alerts/pesquisar";
     }
 

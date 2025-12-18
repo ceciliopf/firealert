@@ -26,13 +26,18 @@ public class FlorestaController {
 
 
     @GetMapping
-    public String abrirPesquisa(@RequestParam(defaultValue = "0") int page, Model model) {
+    public String abrirPesquisa(@RequestParam(defaultValue = "0") int page, 
+                         @RequestParam(required = false) String busca, 
+                         Model model) {
         
         Pageable pageable = PageRequest.of(page, 10, Sort.by("name").ascending());
         
-        Page<Floresta> pageFlorestas = florestaService.listarPaginado(pageable);
         
-        model.addAttribute("pageFlorestas", pageFlorestas); 
+        Page<Floresta> pageFlorestas = florestaService.listarPaginado(busca, pageable);
+        
+        model.addAttribute("pageFlorestas", pageFlorestas);
+        model.addAttribute("busca", busca); 
+        
         return "florestas/pesquisar";
     }
 

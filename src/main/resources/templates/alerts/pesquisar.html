@@ -3,57 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Monitoramento de Ocorrências</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
 <body>
     <div layout:fragment="conteudo">
-        <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-6">
             
-            <div class="flex justify-between items-center bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                
                 <div>
-                    <h1 class="text-xl font-bold text-gray-800">Monitoramento de Alertas</h1>
-                    <p class="text-sm text-gray-500">Acompanhamento de focos de incêndio em tempo real</p>
+                    <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Monitoramento</h1>
+                    <p class="text-sm text-gray-500">Filtragem de alertas em tempo real</p>
                 </div>
-                <a th:href="@{/alertas/cadastrar}" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 transition shadow-sm animate-pulse">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/></svg>
-                    Novo Alerta
-                </a>
+
+                <div id="filtros" class="flex flex-col md:flex-row gap-4 w-full md:w-auto items-center">
+                    
+                    <div class="w-full md:w-48">
+                        <select name="status"
+                                class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-red-500 focus:ring-red-500 py-2.5 px-3 border bg-gray-50"
+                                th:value="${filtroStatus}"
+                                hx-get="/alertas"
+                                hx-trigger="change"
+                                hx-target="#tabela-container"
+                                hx-select="#tabela-container"
+                                hx-swap="outerHTML"
+                                hx-include="#filtros"
+                                hx-push-url="true">
+                            <option value="">Status: Todos</option>
+                            <option value="PENDING" th:selected="${filtroStatus != null and filtroStatus.name() == 'PENDING'}">Em Aberto</option>
+                            <option value="ONGOING" th:selected="${filtroStatus != null and filtroStatus.name() == 'ONGOING'}">Em Andamento</option>
+                            <option value="DONE" th:selected="${filtroStatus != null and filtroStatus.name() == 'DONE'}">Finalizado</option>
+                        </select>
+                    </div>
+
+                    <div class="w-full md:w-48">
+                        <select name="tipo"
+                                class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-red-500 focus:ring-red-500 py-2.5 px-3 border bg-gray-50"
+                                th:value="${filtroTipo}"
+                                hx-get="/alertas"
+                                hx-trigger="change"
+                                hx-target="#tabela-container"
+                                hx-select="#tabela-container"
+                                hx-swap="outerHTML"
+                                hx-include="#filtros"
+                                hx-push-url="true">
+                            <option value="">Gravidade: Todas</option>
+                            <option value="LOW" th:selected="${filtroTipo != null and filtroTipo.name() == 'LOW'}">Baixa</option>
+                            <option value="MEDIUM" th:selected="${filtroTipo != null and filtroTipo.name() == 'MEDIUM'}">Média</option>
+                            <option value="HIGH" th:selected="${filtroTipo != null and filtroTipo.name() == 'HIGH'}">Alta</option>
+                            <option value="CRITIC" th:selected="${filtroTipo != null and filtroTipo.name() == 'CRITIC'}">Crítica</option>
+                        </select>
+                    </div>
+
+                    <a th:href="@{/alertas/cadastrar}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-5 rounded-lg flex items-center gap-2 transition shadow-md whitespace-nowrap">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/></svg>
+                        Novo Alerta
+                    </a>
+                </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div id="tabela-container" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Local / Floresta</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gravidade</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reportado por</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Local / Floresta</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Situação</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Gravidade</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Reportado por</th>
+                            <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Ações</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr th:each="a : ${pageAlerts.content}" class="hover:bg-gray-50 transition">
+                        <tr th:each="a : ${pageAlerts.content}" class="hover:bg-gray-50 transition group">
                             
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono" th:text="'#' + ${a.id}">#1</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-gray-600" th:text="'#' + ${a.id}">#1</td>
                             
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" 
                                 th:text="${a.floresta != null} ? ${a.floresta.name} : 'Local desconhecido'">
                                 Parque Central
                             </td>
 
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                      th:classappend="${a.status.name() == 'PENDING'} ? 'bg-red-100 text-red-800' : 
-                                                     (${a.status.name() == 'ONGOING'} ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800')"
-                                      th:text="${a.status}">
-                                    ABERTO
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="font-bold tracking-wide"
+                                      th:classappend="${a.status.name() == 'PENDING'} ? 'text-red-600' : 
+                                                     (${a.status.name() == 'ONGOING'} ? 'text-orange-500' : 'text-green-600')">
+                                    <span th:if="${a.status.name() == 'PENDING'}">EM ABERTO</span>
+                                    <span th:if="${a.status.name() == 'ONGOING'}">EM ANDAMENTO</span>
+                                    <span th:if="${a.status.name() == 'DONE'}">FINALIZADO</span>
                                 </span>
                             </td>
 
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold"
-                                th:classappend="${a.tipo.name() == 'CRITIC' or a.tipo.name() == 'HIGH'} ? 'text-red-600' : 'text-gray-600'"
-                                th:text="${a.tipo}">
-                                ALTA
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="font-bold"
+                                      th:classappend="${a.tipo.name() == 'CRITIC'} ? 'text-red-700 uppercase' : 
+                                                     (${a.tipo.name() == 'HIGH'} ? 'text-red-500' : 'text-gray-500')"
+                                      th:text="${a.tipo}">
+                                    ALTA
+                                </span>
                             </td>
 
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" 
@@ -62,48 +109,44 @@
                             </td>
 
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a th:href="@{/alertas/visualizar/{id}(id=${a.id})}" class="text-blue-600 hover:text-blue-900 font-bold hover:underline">
-                                    Detalhes
+                                <a th:href="@{/alertas/visualizar/{id}(id=${a.id})}" class="text-gray-400 hover:text-blue-600 font-bold transition flex justify-end items-center gap-1">
+                                    Ver Detalhes →
                                 </a>
                             </td>
                         </tr>
 
                         <tr th:if="${pageAlerts.empty}">
-                            <td colspan="6" class="px-6 py-10 text-center text-gray-500 bg-gray-50 italic">
-                                Nenhum alerta registrado no momento.
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-400">
+                                <div class="flex flex-col items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="opacity-50" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/></svg>
+                                    <span th:if="${filtroStatus == null and filtroTipo == null}">Nenhum alerta registrado.</span>
+                                    <span th:if="${filtroStatus != null or filtroTipo != null}">Nenhum resultado para este filtro.</span>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
                 <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between" th:if="${!pageAlerts.empty}">
-                    
                     <span class="text-sm text-gray-700">
-                        Página <span class="font-bold" th:text="${pageAlerts.number + 1}">1</span> de 
-                        <span class="font-bold" th:text="${pageAlerts.totalPages}">10</span>
-                        <span class="text-gray-400 ml-1" th:text="'(' + ${pageAlerts.totalElements} + ' registros)'">(50 registros)</span>
+                        Página <span class="font-bold text-gray-900" th:text="${pageAlerts.number + 1}">1</span> de 
+                        <span class="font-bold text-gray-900" th:text="${pageAlerts.totalPages}">10</span>
                     </span>
 
                     <div class="flex gap-2">
                         <a th:if="${pageAlerts.hasPrevious()}"
-                           th:href="@{/alertas(page=${pageAlerts.number - 1})}"
-                           class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition">
+                           th:href="@{/alertas(page=${pageAlerts.number - 1}, status=${filtroStatus}, tipo=${filtroTipo})}"
+                           class="px-3 py-1 border border-gray-300 rounded bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
                             Anterior
                         </a>
-                        <span th:unless="${pageAlerts.hasPrevious()}"
-                              class="px-3 py-1 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-100 cursor-not-allowed">
-                            Anterior
-                        </span>
+                        <span th:unless="${pageAlerts.hasPrevious()}" class="px-3 py-1 border border-gray-200 rounded bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">Anterior</span>
 
                         <a th:if="${pageAlerts.hasNext()}"
-                           th:href="@{/alertas(page=${pageAlerts.number + 1})}"
-                           class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition">
+                           th:href="@{/alertas(page=${pageAlerts.number + 1}, status=${filtroStatus}, tipo=${filtroTipo})}"
+                           class="px-3 py-1 border border-gray-300 rounded bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
                             Próximo
                         </a>
-                        <span th:unless="${pageAlerts.hasNext()}"
-                              class="px-3 py-1 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-100 cursor-not-allowed">
-                            Próximo
-                        </span>
+                        <span th:unless="${pageAlerts.hasNext()}" class="px-3 py-1 border border-gray-200 rounded bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">Próximo</span>
                     </div>
                 </div>
 

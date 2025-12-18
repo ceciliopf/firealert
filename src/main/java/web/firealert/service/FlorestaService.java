@@ -19,7 +19,10 @@ public class FlorestaService {
         return florestaRepository.findAll();
     }
     
-    public Page<Floresta> listarPaginado(Pageable pageable) {
+    public Page<Floresta> listarPaginado(String busca, Pageable pageable) {
+        if (busca != null && !busca.isEmpty()) {
+            return florestaRepository.buscarGeral(busca, pageable);
+        }
         return florestaRepository.findAll(pageable);
     }
 

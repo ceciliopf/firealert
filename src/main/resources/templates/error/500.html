@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Erro Interno</title>
+</head>
+<body>
+    <div layout:fragment="conteudo">
+        <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
+            
+            <div class="text-red-200 mb-6 animate-pulse">
+                <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                </svg>
+            </div>
+
+            <h1 class="text-6xl font-black text-red-600 tracking-wider">500</h1>
+            <h2 class="text-3xl font-bold text-gray-800 mt-4">Algo pegou fogo no servidor.</h2>
+            <p class="text-gray-600 mt-4 max-w-lg mx-auto">
+                Desculpe, ocorreu um erro inesperado do nosso lado.
+            </p>
+
+            <div class="mt-6 p-4 bg-red-50 border border-red-100 rounded text-left w-full max-w-2xl overflow-auto" th:if="${message}">
+                <p class="font-mono text-xs text-red-800" th:text="${message}"></p>
+            </div>
+
+            <a th:href="@{/}" class="mt-8 px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-lg shadow transition">
+                Tentar Novamente
+            </a>
+        </div>
+    </div>
+</body>
+</html>

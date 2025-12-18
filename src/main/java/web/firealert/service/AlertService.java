@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import web.firealert.model.Alert;
 import web.firealert.model.Floresta;
+import web.firealert.model.Gravidade;
 import web.firealert.model.Status;
 import web.firealert.repository.AlertRepository;
 import web.firealert.repository.FlorestaRepository;
@@ -26,8 +27,8 @@ public class AlertService {
         return alertRepository.save(alerta);
     }
     
-    public Page<Alert> listarPaginado(Pageable pageable) {
-        return alertRepository.findAll(pageable);
+    public Page<Alert> listarPaginado(Status status, Gravidade tipo, Pageable pageable) {
+        return alertRepository.filtrar(status, tipo, pageable);
     }
 
     public List<Alert> listarTodos() {

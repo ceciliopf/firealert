@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Não Encontrada</title>
+</head>
+<body>
+    <div layout:fragment="conteudo">
+        <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
+            
+            <div class="text-gray-300 mb-8">
+                <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
+                </svg> </div>
+
+            <h1 class="text-6xl font-black text-gray-200 tracking-wider">404</h1>
+            <h2 class="text-3xl font-bold text-gray-800 mt-4">Ops! Nos perdemos na floresta.</h2>
+            <p class="text-gray-600 mt-4 max-w-md mx-auto">
+                A página que você está procurando não existe ou foi movida. Verifique o endereço digitado.
+            </p>
+
+            <a th:href="@{/}" class="mt-8 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow transition transform hover:scale-105 inline-flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/></svg>
+                Voltar para o Início
+            </a>
+        </div>
+    </div>
+</body>
+</html>
