@@ -1,9 +1,16 @@
 package web.firealert.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 import web.firealert.model.Alert;
 import web.firealert.service.AlertService;
 import web.firealert.service.FlorestaService;
@@ -24,10 +31,14 @@ public class AlertController {
     private PessoaService pessoaService;
     
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("listaAlertas", alertService.listarTodos());
-        return "alerts/pesquisar";
+    public String listar(@RequestParam(defaultValue = "0") int page, Model model) {
 
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        
+        Page<Alert> pageAlerts = alertService.listarPaginado(pageable);
+        
+        model.addAttribute("pageAlerts", pageAlerts);
+        return "alerts/pesquisar";
     }
 
     @GetMapping("/cadastrar")
@@ -42,8 +53,18 @@ public class AlertController {
     }
     
     @PostMapping("/salvar")
-    public String salvar(Alert alert) {
+    public String salvar(@Valid Alert alert, BindingResult result, Model model) {
 
+        if (result.hasErrors()) {
+
+            model.addAttribute("florestas", florestaService.listarTodas());
+            model.addAttribute("pessoas", pessoaService.listarTodos());
+            
+            if (alert.getId() != 0) {
+                 return "alerts/visualizar"; 
+            }
+            return "alerts/cadastrar";
+        }
         alertService.criarAlerta(alert);
         
         return "redirect:/alertas";
@@ -54,7 +75,6 @@ public class AlertController {
         Alert alert = alertService.buscarPorId(id);
         model.addAttribute("alert", alert);
         
-        // NOVO: Enviamos as listas para permitir a edição dos selects
         model.addAttribute("florestas", florestaService.listarTodas());
         model.addAttribute("pessoas", pessoaService.listarTodos());
         

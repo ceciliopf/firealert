@@ -33,7 +33,7 @@ public class HomeController {
         model.addAttribute("totalFlorestas", totalFlorestas);
         model.addAttribute("alertasAtivos", alertasAtivos);
         model.addAttribute("totalBrigadistas", totalBrigadistas);
-
+        
         return "index";
     }
     

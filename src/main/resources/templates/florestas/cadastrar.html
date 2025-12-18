@@ -20,15 +20,21 @@
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome da Área / Parque</label>
                     <input type="text" id="name" th:field="*{name}" 
-                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50 py-2 px-3 border"
-                           placeholder="Ex: Reserva Ecológica do Sul" required>
+                           class="w-full rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50 py-2 px-3 border transition-colors"
+                           placeholder="Ex: Reserva Ecológica do Sul"
+                           th:classappend="${#fields.hasErrors('name')} ? 'border-red-500 text-red-900 placeholder-red-300' : 'border-gray-300'">
+                    
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="mt-1 text-sm text-red-600 font-bold"></p>
                 </div>
 
                 <div>
                     <label for="endereco" class="block text-sm font-medium text-gray-700 mb-1">Localização / Coordenadas</label>
                     <input type="text" id="endereco" th:field="*{endereco}" 
-                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50 py-2 px-3 border"
-                           placeholder="Ex: Latitude -19.9, Longitude -43.9 ou Endereço físico">
+                           class="w-full rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50 py-2 px-3 border transition-colors"
+                           placeholder="Ex: Latitude -19.9, Longitude -43.9 ou Endereço físico"
+                           th:classappend="${#fields.hasErrors('endereco')} ? 'border-red-500 text-red-900 placeholder-red-300' : 'border-gray-300'">
+                    
+                    <p th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="mt-1 text-sm text-red-600 font-bold"></p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">

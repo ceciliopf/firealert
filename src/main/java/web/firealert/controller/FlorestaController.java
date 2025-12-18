@@ -1,9 +1,16 @@
 package web.firealert.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 import web.firealert.model.Floresta;
 import web.firealert.service.FlorestaService;
 
@@ -19,11 +26,13 @@ public class FlorestaController {
 
 
     @GetMapping
-    public String abrirPesquisa(Model model) {
-        List<Floresta> list = florestaService.listarTodas();
-
-        model.addAttribute("listaFlorestas", list);
-
+    public String abrirPesquisa(@RequestParam(defaultValue = "0") int page, Model model) {
+        
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("name").ascending());
+        
+        Page<Floresta> pageFlorestas = florestaService.listarPaginado(pageable);
+        
+        model.addAttribute("pageFlorestas", pageFlorestas); 
         return "florestas/pesquisar";
     }
 
@@ -35,7 +44,12 @@ public class FlorestaController {
     }
     
     @PostMapping("/salvar") 
-    public String salvar(Floresta floresta) {
+    public String salvar(@Valid Floresta floresta, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return "florestas/cadastrar";
+        }
+        
         florestaService.salvar(floresta);
         return "redirect:/florestas";
     }
@@ -50,7 +64,7 @@ public class FlorestaController {
     public String editar(@PathVariable("id") Long id, Model model) {
         Floresta floresta = florestaService.buscarPorId(id);
         model.addAttribute("floresta", floresta);
-        return "florestas/cadastrar"; // Reaproveita a tela de cadastro
+        return "florestas/cadastrar";
     }
 
     // 2. Rota de Exclusão

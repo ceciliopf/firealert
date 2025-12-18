@@ -17,44 +17,60 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Local da Ocorrência</label>
-                        <select th:field="*{floresta}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500" required>
+                        <select th:field="*{floresta}" 
+                                class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500 transition-colors"
+                                th:classappend="${#fields.hasErrors('floresta')} ? 'border-red-500 text-red-900' : 'border-gray-300'">
                             <option value="">Selecione a Floresta...</option>
                             <option th:each="f : ${florestas}" th:value="${f.id}" th:text="${f.name}"></option>
                         </select>
+                        <p th:if="${#fields.hasErrors('floresta')}" th:errors="*{floresta}" class="mt-1 text-sm text-red-600 font-bold"></p>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Reportado por</label>
-                        <select th:field="*{pessoa}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
+                        <select th:field="*{pessoa}" 
+                                class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500 transition-colors"
+                                th:classappend="${#fields.hasErrors('pessoa')} ? 'border-red-500 text-red-900' : 'border-gray-300'">
                             <option value="">Selecione o Brigadista...</option>
                             <option th:each="p : ${pessoas}" th:value="${p.codigo}" th:text="${p.nome}"></option>
                         </select>
+                        <p th:if="${#fields.hasErrors('pessoa')}" th:errors="*{pessoa}" class="mt-1 text-sm text-red-600 font-bold"></p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nível de Gravidade</label>
-                        <select th:field="*{tipo}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
+                        <select th:field="*{tipo}" 
+                                class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500 transition-colors"
+                                th:classappend="${#fields.hasErrors('tipo')} ? 'border-red-500 text-red-900' : 'border-gray-300'">
                             <option value="LOW">Baixa</option>
                             <option value="MEDIUM">Média</option>
                             <option value="HIGH">Alta</option>
                             <option value="CRITIC">Crítica</option>
                         </select>
+                        <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="mt-1 text-sm text-red-600 font-bold"></p>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Status Inicial</label>
-                        <select th:field="*{status}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500">
-                             <option value="PENDING">Aberto</option>
+                        <select th:field="*{status}" 
+                                class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500 transition-colors"
+                                th:classappend="${#fields.hasErrors('status')} ? 'border-red-500 text-red-900' : 'border-gray-300'">
+                            <option value="PENDING">Aberto</option>
                             <option value="ONGOING">Em Andamento</option>
                         </select>
+                        <p th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="mt-1 text-sm text-red-600 font-bold"></p>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Descrição Detalhada</label>
-                    <textarea th:field="*{descricao}" rows="4" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500" placeholder="Descreva a situação, pontos de referência, etc..."></textarea>
+                    <textarea th:field="*{descricao}" rows="4" 
+                              class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-red-500 focus:border-red-500 transition-colors"
+                              placeholder="Descreva a situação, pontos de referência, etc..."
+                              th:classappend="${#fields.hasErrors('descricao')} ? 'border-red-500 text-red-900 placeholder-red-300' : 'border-gray-300'"></textarea>
+                    <p th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="mt-1 text-sm text-red-600 font-bold"></p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">

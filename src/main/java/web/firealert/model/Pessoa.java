@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "pessoa")
@@ -16,13 +20,20 @@ public class Pessoa implements Serializable {
 	@SequenceGenerator(name="gerador2", sequenceName="pessoa_codigo_seq", allocationSize=1)
 	@GeneratedValue(generator="gerador2", strategy=GenerationType.SEQUENCE)
 	private Long codigo;
+	@NotBlank(message = "O nome do colaborador é obrigatório.")
+	@Size(min = 15, message = "Preencha o nome completo.")
 	private String nome;
+	@NotBlank(message = "O CPF é obrigatório.")
+	@Pattern(regexp = "\\d{11}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF inválido. Use apenas números ou formato padrão.")
 	private String cpf;
+	@NotBlank(message = "O telefone é obrigatório para contato.")
+	@Pattern(regexp = "\\d{10,11}", message = "O telefone deve ter apenas números (DDD + Número), entre 10 e 11 dígitos.")
 	private String telefone;
 
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "pessoa_tipo")
+	@NotNull(message = "Selecione uma função.")
 	private TipoUsuario tipo;
 
 	

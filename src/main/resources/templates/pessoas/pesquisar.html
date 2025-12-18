@@ -26,31 +26,66 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Função/Tipo</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contato</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alocado em</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr th:each="p : ${listaPessoas}" class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${p.nome}">João da Silva</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs" th:text="${p.tipo}">Brigadista</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${p.telefone}">(34) 9999-8888</td>
+                        <tr th:each="p : ${pagePessoas.content}" class="hover:bg-gray-50 transition">
+                            
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a th:href="@{/florestas/visualizar/{id}(id=${p.floresta.id})}" 
-                                class="text-blue-600 hover:text-blue-900 hover:underline flex items-center gap-1 group">
-                                    <span th:text="${p.floresta.name}">Nome da Floresta</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 16 16">
+                                <a th:href="@{/pessoas/visualizar/{codigo}(codigo=${p.codigo})}" 
+                                   class="text-blue-600 hover:text-blue-900 hover:underline flex items-center gap-2 group">
+                                    <span th:text="${p.nome}">João da Silva</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
                                         <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
                                     </svg>
                                 </a>
                             </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs border border-gray-200" th:text="${p.tipo}">Brigadista</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${p.telefone}">(34) 9999-8888</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${p.floresta != null} ? ${p.floresta.name} : 'Sem alocação'">Parque X</td>
+                            
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <form th:action="@{/pessoas/excluir/{codigo}(codigo=${p.codigo})}" method="post" 
+                                      hx-confirm="Tem certeza que deseja remover este membro da equipe?">
+                                    <button type="submit" class="text-red-400 hover:text-red-700 hover:bg-red-50 p-1 rounded transition" title="Excluir">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4z"/></svg>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                        <tr th:if="${#lists.isEmpty(listaPessoas)}">
-                            <td colspan="4" class="px-6 py-10 text-center text-gray-500">Nenhum membro cadastrado.</td>
+                        <tr th:if="${pagePessoas.empty}">
+                            <td colspan="5" class="px-6 py-10 text-center text-gray-500">Nenhum membro cadastrado.</td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between" th:if="${!pagePessoas.empty}">
+                    <span class="text-sm text-gray-700">
+                        Página <span class="font-bold" th:text="${pagePessoas.number + 1}">1</span> de 
+                        <span class="font-bold" th:text="${pagePessoas.totalPages}">10</span>
+                    </span>
+                    <div class="flex gap-2">
+                        <a th:if="${pagePessoas.hasPrevious()}"
+                           th:href="@{/pessoas(page=${pagePessoas.number - 1})}"
+                           class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            Anterior
+                        </a>
+                        <span th:unless="${pagePessoas.hasPrevious()}" class="px-3 py-1 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-100 cursor-not-allowed">Anterior</span>
+
+                        <a th:if="${pagePessoas.hasNext()}"
+                           th:href="@{/pessoas(page=${pagePessoas.number + 1})}"
+                           class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            Próximo
+                        </a>
+                        <span th:unless="${pagePessoas.hasNext()}" class="px-3 py-1 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-100 cursor-not-allowed">Próximo</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

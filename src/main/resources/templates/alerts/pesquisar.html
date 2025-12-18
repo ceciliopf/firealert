@@ -2,18 +2,19 @@
 <html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Monitoramento de Alertas</title>
+    <title>Monitoramento de Ocorrências</title>
 </head>
 <body>
     <div layout:fragment="conteudo">
         <div class="flex flex-col gap-5">
+            
             <div class="flex justify-between items-center bg-white p-5 rounded-lg shadow-sm border border-gray-200">
                 <div>
-                    <h1 class="text-xl font-bold text-gray-800">Ocorrências Ativas</h1>
-                    <p class="text-sm text-gray-500">Monitoramento em tempo real</p>
+                    <h1 class="text-xl font-bold text-gray-800">Monitoramento de Alertas</h1>
+                    <p class="text-sm text-gray-500">Acompanhamento de focos de incêndio em tempo real</p>
                 </div>
-                <a th:href="@{/alertas/cadastrar}" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 transition animate-pulse">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/></svg>
+                <a th:href="@{/alertas/cadastrar}" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 transition shadow-sm animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/></svg>
                     Novo Alerta
                 </a>
             </div>
@@ -22,32 +23,90 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gravidade</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Local (Floresta)</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reportado por</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Local / Floresta</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gravidade</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reportado por</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr th:each="a : ${listaAlertas}" class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span th:classappend="${a.tipo.name() == 'ALTA'} ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'"
-                                      class="px-2 py-1 rounded-full text-xs font-bold" 
-                                      th:text="${a.tipo}">ALTA</span>
+                        <tr th:each="a : ${pageAlerts.content}" class="hover:bg-gray-50 transition">
+                            
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono" th:text="'#' + ${a.id}">#1</td>
+                            
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" 
+                                th:text="${a.floresta != null} ? ${a.floresta.name} : 'Local desconhecido'">
+                                Parque Central
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium" th:text="${a.floresta != null} ? ${a.floresta.name} : 'Não informado'">Parque Central</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${a.status}">ABERTO</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${a.pessoa != null} ? ${a.pessoa.nome} : 'Sistema'">Guardião 1</td>
+
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+                                      th:classappend="${a.status.name() == 'PENDING'} ? 'bg-red-100 text-red-800' : 
+                                                     (${a.status.name() == 'ONGOING'} ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800')"
+                                      th:text="${a.status}">
+                                    ABERTO
+                                </span>
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold"
+                                th:classappend="${a.tipo.name() == 'CRITIC' or a.tipo.name() == 'HIGH'} ? 'text-red-600' : 'text-gray-600'"
+                                th:text="${a.tipo}">
+                                ALTA
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" 
+                                th:text="${a.pessoa != null} ? ${a.pessoa.nome} : 'Sistema'">
+                                João
+                            </td>
+
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a th:href="@{/alertas/visualizar/{id}(id=${a.id})}" class="text-blue-600 hover:text-blue-900 font-bold hover:underline">Detalhes</a>
+                                <a th:href="@{/alertas/visualizar/{id}(id=${a.id})}" class="text-blue-600 hover:text-blue-900 font-bold hover:underline">
+                                    Detalhes
+                                </a>
                             </td>
                         </tr>
-                        <tr th:if="${#lists.isEmpty(listaAlertas)}">
-                            <td colspan="5" class="px-6 py-10 text-center text-gray-500">Nenhuma ocorrência ativa no momento.</td>
+
+                        <tr th:if="${pageAlerts.empty}">
+                            <td colspan="6" class="px-6 py-10 text-center text-gray-500 bg-gray-50 italic">
+                                Nenhum alerta registrado no momento.
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between" th:if="${!pageAlerts.empty}">
+                    
+                    <span class="text-sm text-gray-700">
+                        Página <span class="font-bold" th:text="${pageAlerts.number + 1}">1</span> de 
+                        <span class="font-bold" th:text="${pageAlerts.totalPages}">10</span>
+                        <span class="text-gray-400 ml-1" th:text="'(' + ${pageAlerts.totalElements} + ' registros)'">(50 registros)</span>
+                    </span>
+
+                    <div class="flex gap-2">
+                        <a th:if="${pageAlerts.hasPrevious()}"
+                           th:href="@{/alertas(page=${pageAlerts.number - 1})}"
+                           class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition">
+                            Anterior
+                        </a>
+                        <span th:unless="${pageAlerts.hasPrevious()}"
+                              class="px-3 py-1 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-100 cursor-not-allowed">
+                            Anterior
+                        </span>
+
+                        <a th:if="${pageAlerts.hasNext()}"
+                           th:href="@{/alertas(page=${pageAlerts.number + 1})}"
+                           class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition">
+                            Próximo
+                        </a>
+                        <span th:unless="${pageAlerts.hasNext()}"
+                              class="px-3 py-1 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-100 cursor-not-allowed">
+                            Próximo
+                        </span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

@@ -1,6 +1,8 @@
 package web.firealert.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import web.firealert.model.Floresta;
 import web.firealert.repository.FlorestaRepository;
@@ -15,6 +17,10 @@ public class FlorestaService {
 
     public List<Floresta> listarTodas() {
         return florestaRepository.findAll();
+    }
+    
+    public Page<Floresta> listarPaginado(Pageable pageable) {
+        return florestaRepository.findAll(pageable);
     }
 
     public Floresta salvar(Floresta floresta) {

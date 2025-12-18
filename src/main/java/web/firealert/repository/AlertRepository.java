@@ -13,6 +13,6 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
     long countByStatusNot(Status status);
 
     List<Alert> findByStatus(Status status);
-
+    List<Alert> findByPessoaCodigo(Long codigo);
     List<Alert> findByFlorestaId(Long id);
 }

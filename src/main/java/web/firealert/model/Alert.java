@@ -1,6 +1,9 @@
 package web.firealert.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -14,8 +17,11 @@ public class Alert {
 
     @Enumerated(EnumType.STRING)
     @Column(name ="alert_gravidade")
+    @NotNull(message = "Informe a gravidade.")
     private Gravidade tipo;
-
+    
+    @NotBlank(message = "A descrição do ocorrido é fundamental.")
+    @Size(min = 15, message = "Descreva com mais detalhes (mínimo 15 caracteres).")
     private String descricao;
 
     @Enumerated(EnumType.STRING)

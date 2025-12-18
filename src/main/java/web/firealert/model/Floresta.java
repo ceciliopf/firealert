@@ -1,6 +1,8 @@
 package web.firealert.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,10 @@ public class Floresta {
     @SequenceGenerator(name="floresta_seq", sequenceName="floresta_codigo_seq", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="floresta_seq")
     private long id;
+    @NotBlank(message = "O nome da área é obrigatório")
+    @Size(min = 5, message = "O nome deve ter pelo menos 5 letras.")
     private String name;
+    @NotBlank(message = "O endereço é obrigatório")
     private String endereco;
 
     @OneToMany(mappedBy = "floresta", cascade = CascadeType.ALL)

@@ -19,7 +19,7 @@
                 </div>
                 
                 <form th:action="@{/alertas/excluir/{id}(id=${alert.id})}" method="post" 
-                    hx-confirm="Tem certeza? Esta ação é irreversível.">
+                      hx-confirm="Tem certeza? Esta ação é irreversível.">
                     <button type="submit" class="text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded border border-transparent hover:border-red-200 transition text-sm font-semibold flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4z"/></svg>
                         Excluir
@@ -42,22 +42,32 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Local (Floresta)</label>
-                                <select th:field="*{floresta}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500">
+                                <select th:field="*{floresta}" 
+                                        class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        th:classappend="${#fields.hasErrors('floresta')} ? 'border-red-500 text-red-900' : 'border-gray-300'">
                                     <option th:each="f : ${florestas}" th:value="${f.id}" th:text="${f.name}"></option>
                                 </select>
+                                <p th:if="${#fields.hasErrors('floresta')}" th:errors="*{floresta}" class="mt-1 text-sm text-red-600 font-bold"></p>
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Reportado por</label>
-                                <select th:field="*{pessoa}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500">
+                                <select th:field="*{pessoa}" 
+                                        class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        th:classappend="${#fields.hasErrors('pessoa')} ? 'border-red-500 text-red-900' : 'border-gray-300'">
                                     <option th:each="p : ${pessoas}" th:value="${p.codigo}" th:text="${p.nome}"></option>
                                 </select>
+                                <p th:if="${#fields.hasErrors('pessoa')}" th:errors="*{pessoa}" class="mt-1 text-sm text-red-600 font-bold"></p>
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Descrição / Detalhes</label>
-                            <textarea th:field="*{descricao}" rows="5" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500" placeholder="Descreva o ocorrido..."></textarea>
+                            <textarea th:field="*{descricao}" rows="5" 
+                                      class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                      placeholder="Descreva o ocorrido..."
+                                      th:classappend="${#fields.hasErrors('descricao')} ? 'border-red-500 text-red-900 placeholder-red-300' : 'border-gray-300'"></textarea>
+                            <p th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="mt-1 text-sm text-red-600 font-bold"></p>
                         </div>
                     </div>
 
@@ -68,22 +78,28 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Nível de Gravidade</label>
-                            <select th:field="*{tipo}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500">
+                            <select th:field="*{tipo}" 
+                                    class="w-full rounded-md shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    th:classappend="${#fields.hasErrors('tipo')} ? 'border-red-500 text-red-900' : 'border-gray-300'">
                                 <option value="LOW">Baixa</option>
                                 <option value="MEDIUM">Média</option>
                                 <option value="HIGH">Alta</option>
                                 <option value="CRITIC">Crítica</option>
                             </select>
+                            <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="mt-1 text-sm text-red-600 font-bold"></p>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Atual</label>
-                            <select th:field="*{status}" class="w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 font-bold focus:ring-blue-500 focus:border-blue-500"
-                                    th:classappend="${alert.status.name() == 'CONTROLADO'} ? 'text-green-600' : 'text-red-600'">
+                            <select th:field="*{status}" 
+                                    class="w-full rounded-md shadow-sm border py-2 px-3 font-bold focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    th:classappend="(${alert.status != null and alert.status.name() == 'CONTROLADO'} ? 'text-green-600 ' : 'text-red-600 ') + 
+                                                    (${#fields.hasErrors('status')} ? 'border-red-500' : 'border-gray-300')">
                                 <option value="PENDING" class="text-red-600">Aberto</option>
                                 <option value="ONGOING" class="text-yellow-600">Em Andamento</option>
                                 <option value="DONE" class="text-green-600">Controlado / Finalizado</option>
                             </select>
+                            <p th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="mt-1 text-sm text-red-600 font-bold"></p>
                         </div>
 
                         <div class="pt-6 mt-6 border-t border-gray-200">
