@@ -19,6 +19,16 @@
             "projectName": "controlevacinacao",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-FireAlert<firealert>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "web.firealert.FireAlert",
+            "projectName": "firealert",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

@@ -13,9 +13,9 @@
 	</parent>
 
 	<groupId>web</groupId>
-	<artifactId>controlevacinacao</artifactId>
+	<artifactId>firealert</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>controlevacinacao</name>
+	<name>firealert</name>
 
 	<properties>
 		<!-- Versao do Java -->
